@@ -8,9 +8,9 @@ import os
 def load_data(filepath):
     """Loads a CSV file into a pandas DataFrame."""
     try:
-        df = pd.read_csv(filepath)
+        logistics_df = pd.read_csv('logistics_df.csv')
         print(f"Data loaded successfully from {filepath}")
-        return df
+        return logistics_df
     except FileNotFoundError:
         print(f"File not found at {filepath}")
         return None
