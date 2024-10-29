@@ -4,13 +4,36 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-# Utility to load data
-def load_data(filepath):
-    """Loads a CSV file into a pandas DataFrame."""
+# Utility to load raw data
+def load_raw_data(filepath='../data/raw/logistics_df.csv'):
+    """Loads raw data from the specified file path."""
     try:
-        logistics_df = pd.read_csv('logistics_df.csv')
-        print(f"Data loaded successfully from {filepath}")
-        return logistics_df
+        df = pd.read_csv(filepath)
+        print(f"Raw data loaded successfully from {filepath}")
+        return df
+    except FileNotFoundError:
+        print(f"File not found at {filepath}")
+        return None
+
+# Utility to load cleaned data
+
+def load_cleaned_data(filepath='../data/processed/cleaned_logistics_data.csv'):
+    """Loads cleaned data from the specified file path."""
+    try:
+        df = pd.read_csv(filepath)
+        print(f"Cleaned data loaded successfully from {filepath}")
+        return df
+    except FileNotFoundError:
+        print(f"File not found at {filepath}")
+        return None
+
+# Utility to load engineered data
+def load_engineered_data(filepath='../data/processed/engineered_data.csv'):
+    """Loads engineered data from the specified file path."""
+    try:
+        df = pd.read_csv(filepath)
+        print(f"Engineered data loaded successfully from {filepath}")
+        return df
     except FileNotFoundError:
         print(f"File not found at {filepath}")
         return None
@@ -19,6 +42,12 @@ def load_data(filepath):
 def save_data(df, filepath):
     """Saves a pandas DataFrame to a CSV file."""
     try:
+        # Ensure directory exists
+        directory = os.path.dirname(filepath)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+            print(f"Directory created at {directory}")
+
         df.to_csv(filepath, index=False)
         print(f"Data saved successfully to {filepath}")
     except Exception as e:
@@ -47,12 +76,15 @@ def load_model(filepath):
 # Utility to plot distribution of a column
 def plot_distribution(df, column, title="Distribution Plot"):
     """Plots the distribution of a specific column in a DataFrame."""
-    plt.figure(figsize=(10, 6))
-    sns.histplot(df[column], kde=True, bins=30, edgecolor='black')
-    plt.title(f"{title} for {column}")
-    plt.xlabel(column)
-    plt.ylabel("Frequency")
-    plt.show()
+    if column in df.columns:
+        plt.figure(figsize=(10, 6))
+        sns.histplot(df[column], kde=True, bins=30, edgecolor='black')
+        plt.title(f"{title} for {column}")
+        plt.xlabel(column)
+        plt.ylabel("Frequency")
+        plt.show()
+    else:
+        print(f"Column '{column}' not found in DataFrame.")
 
 # Utility to plot correlation heatmap
 def plot_correlation_heatmap(df, title="Correlation Heatmap"):
@@ -62,6 +94,19 @@ def plot_correlation_heatmap(df, title="Correlation Heatmap"):
     sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f")
     plt.title(title)
     plt.show()
+
+def plot_numeric_correlation_heatmap(df, title="Correlation Heatmap"):
+    """Plots a correlation heatmap for numeric features in a DataFrame."""
+    # Select only numeric columns
+    numeric_df = df.select_dtypes(include=['float64', 'int64'])
+    # Calculate the correlation matrix
+    corr_matrix = numeric_df.corr()
+    # Plot the heatmap
+    plt.figure(figsize=(12, 8))
+    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f")
+    plt.title(title)
+    plt.show()
+
 
 # Utility to check for missing values
 def check_missing_values(df):
@@ -79,18 +124,26 @@ def ensure_dir(directory):
     else:
         print(f"Directory already exists at {directory}")
 
-# Example usage
-if __name__ == "__main__":
-    # Load sample data
-    df = load_data('../data/raw/sample_data.csv')
+# # Example usage
+# if __name__ == "__main__":
+#     # Load raw data
+#     raw_df = load_raw_data()
     
-    # Check for missing values
-    if df is not None:
-        check_missing_values(df)
+#     # Load cleaned data
+#     cleaned_df = load_cleaned_data()
     
-    # Plot a sample distribution
-    if df is not None and 'SampleColumn' in df.columns:
-        plot_distribution(df, 'SampleColumn', title="Sample Column Distribution")
+#     # Load engineered data
+#     engineered_df = load_engineered_data()
     
-    # Save processed data
-    save_data(df, '../data/processed/processed_data.csv')
+#     # Example: Check for missing values in raw data if loaded successfully
+#     if raw_df is not None:
+#         check_missing_values(raw_df)
+    
+#     # Example: Plot a distribution for a known column in engineered data
+#     if engineered_df is not None and 'Distance Traveled (miles)' in engineered_df.columns:
+#         plot_distribution(engineered_df, 'Distance Traveled (miles)', title="Distance Traveled Distribution")
+    
+#     # Save an example processed data file (adjust DataFrame as needed)
+#     if raw_df is not None:
+#         save_data(raw_df, 'data/processed/logistics_processed_data.csv')
+#     print("Data Processing Complete")
