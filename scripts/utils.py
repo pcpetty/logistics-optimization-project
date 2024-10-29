@@ -124,7 +124,25 @@ def ensure_dir(directory):
     else:
         print(f"Directory already exists at {directory}")
 
-# # Example usage
+def save_plot(fig, filename, folder="results/figures"):
+    """Save a matplotlib figure to the specified folder."""
+    ensure_dir(folder)
+    fig.savefig(f"{folder}/{filename}", dpi=300, bbox_inches="tight")
+    plt.close(fig)  # Close figure after saving
+
+def save_table(df, filename, folder="results/model_output"):
+    """Save a pandas DataFrame to a specified folder as CSV."""
+    ensure_dir(folder)
+    df.to_csv(f"{folder}/{filename}", index=False)
+
+#     # Example usage
+# fig = plt.figure(figsize=(10, 6))
+# sns.histplot(df['Fuel Costs (USD)'], bins=30, kde=True)
+# save_plot(fig, "fuel_cost_histogram.png")
+
+# # Save model performance table
+# save_table(model_performance, "model_performance.csv")
+
 # if __name__ == "__main__":
 #     # Load raw data
 #     raw_df = load_raw_data()
@@ -135,11 +153,11 @@ def ensure_dir(directory):
 #     # Load engineered data
 #     engineered_df = load_engineered_data()
     
-#     # Example: Check for missing values in raw data if loaded successfully
+#     Check for missing values in raw data if loaded successfully
 #     if raw_df is not None:
 #         check_missing_values(raw_df)
     
-#     # Example: Plot a distribution for a known column in engineered data
+#     Plot a distribution for a known column in engineered data
 #     if engineered_df is not None and 'Distance Traveled (miles)' in engineered_df.columns:
 #         plot_distribution(engineered_df, 'Distance Traveled (miles)', title="Distance Traveled Distribution")
     
