@@ -18,7 +18,7 @@ def evaluate_model(model, X_test, y_test):
 if __name__ == "__main__":
     # Example usage
     logistics_df = pd.read_csv('data/processed/engineered_data.csv')
-    X = logistics_df[['Distance Traveled (miles)', 'Cost per Mile']]
+    X = logistics_df[['Actual Distance (miles)', 'Cost per Mile']]
     y = logistics_df['Total Operational Cost (USD)']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     

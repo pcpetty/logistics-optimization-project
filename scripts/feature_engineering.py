@@ -5,13 +5,15 @@ def create_features(filepath='data/processed/engineered_data.csv'):
     """Generate new features for analysis."""
     # Load the cleaned data
     logistics_df = pd.read_csv(filepath)
-
+    # Replace instances of `Calculated Fuel Costs (USD)` with `Fuel Cost per Mile`
+    # Example if calculating average or other metrics
+    avg_fuel_cost_per_mile = df['Fuel Cost Per Mile'].mean()
     # Feature: Cost per Mile
-    logistics_df['Cost per Mile'] = logistics_df['Fuel Costs (USD)'] / logistics_df['Distance Traveled (miles)']
-    
+    logistics_df['Cost per Mile'] = logistics_df['Calculated Fuel Cost (USD)'] / logistics_df['Actual Distance (miles)']
+    # Replace instances of `Calculated Fuel Costs (USD)` with `Fuel Cost per Mile`
     # Add additional feature engineering steps here
     # Example: Delivery Efficiency (Distance per Time)
-    logistics_df['Delivery Efficiency'] = logistics_df['Distance Traveled (miles)'] / logistics_df['Delivery Time (hours)']
+    logistics_df['Delivery Efficiency'] = logistics_df['Actual Distance (miles)'] / logistics_df['Delivery Duration (hours)']
     
     # Save the engineered data
     logistics_df.to_csv(filepath, index=False)
