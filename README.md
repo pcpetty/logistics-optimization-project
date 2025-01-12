@@ -1,5 +1,7 @@
 # Logistics Optimization Project
 
+![Screenshot 2025-01-05 at 15-56-05 riskrangerlogo webp (WEBP Image 1024 × 1024 pixels) — Scaled (75%)](https://github.com/user-attachments/assets/438ad3a7-6c11-41a3-8f83-177ec0cfc66f)
+
 ---
 
 ## Project Overview
